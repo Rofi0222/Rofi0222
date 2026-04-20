@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✨ Rofi Profile</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* =============================== */
+    /* 1. RESET & BASE STYLES         */
+    /* =============================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth; /* 👈 Smooth scroll global */
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+      /* Gradien hitam-putih smooth */
+      background: linear-gradient(145deg, #ffffff 0%, #e5e7eb 30%, #9ca3af 70%, #1f2937 100%);
+      background-attachment: fixed;
+    }
+
+    /* =============================== */
+    /* 2. LAPISAN CAHAYA KURSOR        */
+    /* =============================== */
+    .cursor-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(circle 500px at 50% 50%, rgba(255, 255, 255, 0.25), transparent 70%);
+      transition: background 0.15s ease-out;
+      will-change: background;
+    }
+
+    /* =============================== */
+    /* 3. KONTEN UTAMA & LAYOUT        */
+    /* =============================== */
+    .main-container {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* Smooth scroll offset (agar tidak ketutup header sticky) */
+    section {
+      scroll-margin-top: 120px;
+    }
+
+    /* =============================== */
+    /* 4. KOMPONEN GLASS (DASAR)       */
+    /* =============================== */
+    .glass,
+    .glass-card,
+    nav.glass {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 32px;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1), 0 4px 18px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+    }
+
+    /* Hover efek membesar & glow */
+    .glass-card:hover,
+    nav.glass:hover {
+      transform: scale(1.02);
+      background: rgba(255, 255, 255, 0.28);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 30px 50px -12px rgba(168, 85, 247, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+    }
+
+    /* =============================== */
+    /* 5. HEADER & NAVIGASI            */
+    /* =============================== */
+    nav.glass {
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 60px;
+      overflow: visible !important; /* Agar gelembung tidak terpotong */
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #2e1065;
+      text-shadow: 0 2px 10px rgba(255,255,255,0.5);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      overflow: visible !important;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #2e1065;
+      font-weight: 600;
+      padding: 8px 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s;
+      /* Keperluan gelembung */
+      position: relative;
+      background: transparent;
+      z-index: 2;
+    }
+
+    .nav-links a:hover {
+      color: #4c1d95;
+      border-bottom-color: #7e22ce;
+    }
+
+    /* =============================== */
+    /* 6. EFEK GELEMBUNG PIL BENING     */
+    /* =============================== */
+   .nav-links a::after {
+  content: '';
+  position: absolute;
+  top: 50%;                    /* selalu di tengah vertikal */
+  left: 50%;                   /* selalu di tengah horizontal */
+  transform: translate(-50%, -50%) scale(0);
+  width: 100%;                 /* menyesuaikan lebar teks */
+  height: 100%;                /* menyesuaikan tinggi teks */
+  border-radius: 20px;
+  background: radial-gradient(circle at 30% 30%, 
+    rgba(255, 255, 255, 0.7) 0%, 
+    rgba(230, 220, 255, 0.35) 70%, 
+    transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.2, 1), opacity 0.2s;
+  z-index: -1;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6),
+              inset 0 0 10px rgba(255, 255, 255, 0.2);
+  filter: none;
+}
+
+.nav-links a:hover::after {
+  transform: translate(-50%, -50%) scale(1);   /* muncul penuh di tengah */
+  opacity: 0.9;
+}
+    }
+
+    .nav-links a:hover::after {
+      transform: translate(-50%, -50%) scale(7);
+      opacity: 0.9;
+      transition: transform 0.25s ease-out, opacity 0.15s;
+    }
+
+    /* =============================== */
+    /* 7. HERO CARD                    */
+    /* =============================== */
+    .hero-card {
+      padding: 48px 56px;
+      border-radius: 48px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #1e1b4b, #312e81);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      color: #1e293b;
+      margin-bottom: 32px;
+      opacity: 0.9;
+    }
+
+    /* =============================== */
+    /* 8. GRID FITUR                   */
+    /* =============================== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 28px;
+    }
+
+    .feature-item {
+      padding: 32px 24px;
+      border-radius: 28px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+    }
+
+    .feature-item:hover {
+      transform: scale(1.04);
+      background: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 25px 40px -14px #a855f7, 0 0 0 2px rgba(255,255,255,0.2) inset;
+    }
+
+    .feature-item i {
+      font-size: 2.8rem;
+      color: #4c1d95;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px white;
+    }
+
+    .feature-item h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+      color: #1e1b4b;
+    }
+
+    .feature-item p {
+      color: #1e293b;
+    }
+
+    /* =============================== */
+    /* 9. TOMBOL (BUTTON)              */
+    /* =============================== */
+    .btn {
+      display: inline-block;
+      padding: 14px 38px;
+      border-radius: 60px;
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #1e1b4b;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.25s;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: rgba(255,255,255,0.5);
+      border-color: white;
+      box-shadow: 0 15px 25px -8px #a855f7;
+    }
+
+    /* =============================== */
+    /* 10. RESPONSIVE                  */
+    /* =============================== */
+    @media (max-width: 700px) {
+      nav.glass {
+        flex-direction: column;
+        gap: 20px;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      .hero-card {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LAPISAN CAHAYA KURSOR -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- KONTEN UTAMA -->
+  <div class="main-container">
+    
+    <!-- =============================== -->
+    <!-- HEADER STICKY                   -->
+    <!-- =============================== -->
+    <nav class="glass">
+      <div class="logo">✨ Rofi Future Project</div>
+      <div class="nav-links">
+        <a href="#beranda">Beranda</a>
+        <a href="#fitur">Fitur</a>
+        <a href="#kontak">Kontak</a>
+      </div>
+    </nav>
+
+    <!-- =============================== -->
+    <!-- SECTION BERANDA                 -->
+    <!-- =============================== -->
+    <section id="beranda" class="glass-card hero-card">
+      <h1>For future</h1>
+      <p class="subtitle">Semua projek ambisius berawal dari mimpi dan ambisi untuk terus menciptakan sesuatu yang lebih efisien</p>
+      <a href="roadmap.html" class="btn"><i class="fas fa-arrow-down"></i> Lihat Tentang saya</a>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION FITUR                   -->
+    <!-- =============================== -->
+    <section id="fitur">
+      <h2 style="font-size: 2.5rem; margin-bottom: 30px; color: #1e1b4b;">✨ Tentang saya</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <i class="fas fa-fingerprint"></i>
+          <h3>profiles</h3>
+          <p>Memahami kepribadian saya.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-chart-bar"></i>
+          <h3>Tujuan</h3>
+          <p>Memahami apa tujuan saya.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-fire"></i>
+          <h3>Teori</h3>
+          <p>Memahami cara saya memandang.</p>
+        </div>
+        <div class="feature-item">
+          <i class="fas fa-arrow-trend-up"></i>
+          <h3>Mentalitas</h3>
+          <p>memahami cara saya merespon.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================== -->
+    <!-- SECTION KONTAK                 -->
+    <!-- =============================== -->
+   <section id="kontak" class="glass-card" style="padding: 48px; text-align: center;">
+  <h2 style="font-size: 2.5rem; color: #1e1b4b; margin-bottom: 20px;">📬 Hubungi Saya</h2>
+  <p style="font-size: 1.2rem; color: #1e293b; margin-bottom: 30px;">Temui saya di platform berikut</p>
+  
+  <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;">
+    <!-- Email -->
+    <a href="mailto:rofiinformasi@gmail.com" class="btn"><i class="fas fa-envelope"></i> Email</a>
+    <!-- Telegram -->
+    <a href="https://t.me/@Alya0222" target="_blank" class="btn"><i class="fab fa-telegram"></i> Telegram</a>
+    <!-- Instagram -->
+    <a href="https://instagram.com/litz2322" target="_blank" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
+    <!-- GitHub -->
+    <a href="https://github.com/usernamekamu" target="_blank" class="btn"><i class="fab fa-github"></i> GitHub</a>
+    <!-- JobStreet (gunakan ikon briefcase) -->
+    <a href="https://id.jobstreet.com/id/profiles/muhammad-rofiudermawan-PtJzPk76Cz" target="_blank" class="btn"><i class="fas fa-briefcase"></i> JobStreet</a>
+  </div>
+</section>
+  </div>
+
+  <!-- =============================== -->
+  <!-- JAVASCRIPT                      -->
+  <!-- =============================== -->
+  <script>
+    (function() {
+      // 1. KURSOR CAIR (background glow)
+      const glow = document.getElementById('cursorGlow');
+      if (glow) {
+        function updateGlow(e) {
+          const x = e.clientX;
+          const y = e.clientY;
+          glow.style.background = `radial-gradient(circle 500px at ${x}px ${y}px, rgba(255, 255, 255, 0.3), rgba(200, 200, 200, 0.1) 60%, transparent 80%)`;
+        }
+        let ticking = false;
+        window.addEventListener('mousemove', (e) => {
+          if (!ticking) {
+            window.requestAnimationFrame(() => {
+              updateGlow(e);
+              ticking = false;
+            });
+            ticking = true;
+          }
+        });
+        window.addEventListener('mouseleave', () => {
+          glow.style.background = `radial-gradient(circle 500px at 50% 50%, rgba(255, 255, 255, 0.2), transparent 70%)`;
+        });
+        glow.style.background = `radial-gradient(circle 500px at 50% 50%, rgba(255, 255, 255, 0.2), transparent 70%)`;
+      }
+
+
+    })();
+  </script>
+</body>
+</html>

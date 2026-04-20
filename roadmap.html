@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧠 Rofi · Roadmap Detail</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* =============================== */
+    /* RESET & BASE                   */
+    /* =============================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+      background: linear-gradient(145deg, #ffffff 0%, #e5e7eb 30%, #9ca3af 70%, #1f2937 100%);
+      background-attachment: fixed;
+    }
+
+    /* Lapisan cahaya kursor */
+    .cursor-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(circle 500px at 50% 50%, rgba(255, 255, 255, 0.25), transparent 70%);
+      transition: background 0.15s ease-out;
+      will-change: background;
+    }
+
+    /* Konten utama */
+    .main-container {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    section {
+      scroll-margin-top: 100px;
+    }
+
+    /* =============================== */
+    /* KOMPONEN GLASS                 */
+    /* =============================== */
+    .glass-card,
+    nav.glass {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 32px;
+      box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1), 0 4px 18px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1);
+    }
+
+    .glass-card:hover,
+    nav.glass:hover {
+      transform: scale(1.02);
+      background: rgba(255, 255, 255, 0.28);
+      border-color: rgba(255, 255, 255, 0.6);
+      box-shadow: 0 30px 50px -12px rgba(168, 85, 247, 0.3), 0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+    }
+
+    /* =============================== */
+    /* HEADER & NAVIGASI              */
+    /* =============================== */
+    nav.glass {
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 60px;
+      overflow: visible !important;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1e1b4b;
+      text-shadow: 0 2px 10px rgba(255,255,255,0.5);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      overflow: visible !important;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1e1b4b;
+      font-weight: 600;
+      padding: 8px 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s;
+      position: relative;
+      background: transparent;
+      z-index: 2;
+    }
+
+    .nav-links a:hover {
+      color: #4c1d95;
+      border-bottom-color: #7e22ce;
+    }
+
+    /* Gelembung tengah */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: radial-gradient(circle at 30% 30%, 
+        rgba(255, 255, 255, 0.7) 0%, 
+        rgba(230, 220, 255, 0.35) 70%, 
+        transparent 100%);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.2, 1), opacity 0.2s;
+      z-index: -1;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6),
+                  inset 0 0 10px rgba(255, 255, 255, 0.2);
+      filter: none;
+    }
+
+    .nav-links a:hover::after {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.9;
+    }
+
+    /* =============================== */
+    /* SECTION HEADER                  */
+    /* =============================== */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .section-header i {
+      font-size: 2.5rem;
+      color: #4c1d95;
+      text-shadow: 0 0 15px white;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      color: #1e1b4b;
+      font-weight: 700;
+    }
+
+    /* =============================== */
+    /* KARTU KONTEN                   */
+    /* =============================== */
+    .content-card {
+      padding: 40px 48px;
+      border-radius: 36px;
+    }
+
+    .content-card p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #1e293b;
+      margin-bottom: 20px;
+    }
+
+    .highlight-list {
+      list-style: none;
+      margin-top: 24px;
+    }
+
+    .highlight-list li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+      color: #1e1b4b;
+    }
+
+    .highlight-list i {
+      color: #4c1d95;
+      width: 24px;
+    }
+
+    /* Tombol kembali */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 12px 28px;
+      border-radius: 40px;
+      background: rgba(255,255,255,0.3);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.5);
+      color: #1e1b4b;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.25s;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.05);
+      background: rgba(255,255,255,0.5);
+      box-shadow: 0 10px 20px -5px #a855f7;
+    }
+
+    /* Responsif */
+    @media (max-width: 700px) {
+      nav.glass {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .nav-links {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .content-card {
+        padding: 30px 24px;
+      }
+      h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CAHAYA KURSOR -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <div class="main-container">
+    
+    <!-- HEADER STICKY -->
+    <nav class="glass">
+      <div class="logo">🧠 Tentang Saya</div>
+      <div class="nav-links">
+        <a href="#profiles">Profiles</a>
+        <a href="#tujuan">Tujuan</a>
+        <a href="#teori">Teori</a>
+        <a href="#mentalitas">Mentalitas</a>
+      </div>
+    </nav>
+
+    <!-- SECTION: PROFILES -->
+    <section id="profiles">
+      <div class="section-header">
+        <i class="fas fa-fingerprint"></i>
+        <h2>Profiles</h2>
+      </div>
+      <div class="glass-card content-card">
+        <p>Individu yang analitis dengan ketahanan terhadap tekanan tinggi serta kemampuan manajemen waktu yang sangat baik. terbiasa dalam pengambilan keputusan logis secara cepat dan mempertahankan konsentrasi tinggi  secara konsisten. menjunjung tinggi kedisiplinan, ketekunan dan komitmen penuh pada setiap tanggung jawab:</p>
+        <ul class="highlight-list">
+          <li><i class="fas fa-chess-queen"></i> Strategis — selalu berpikir 5 langkah ke depan</li>
+          <li><i class="fas fa-book-open"></i> Pembelajar mandiri — haus akan pengetahuan baru</li>
+          <li><i class="fas fa-pen-fancy"></i> Kreatif analitis — menyukai sistem yang efisien</li>
+          <li><i class="fas fa-hand-peace"></i> Tenang di bawah tekanan — fokus pada solusi</li>
+        </ul>
+        <a href="#" class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i> Kembali ke Profil</a>
+      </div>
+    </section>
+
+    <!-- SECTION: TUJUAN -->
+    <section id="tujuan">
+      <div class="section-header">
+        <i class="fas fa-chart-bar"></i>
+        <h2>Tujuan</h2>
+      </div>
+      <div class="glass-card content-card">
+        <p>Saya selalu memiliki tujuan menciptakan ekosistem mandiri yang terstruktur dan terencana</p>
+        <ul class="highlight-list">
+          <li><i class="fas fa-rocket"></i> Membangun startup di bidang financial technology</li>
+          <li><i class="fas fa-globe"></i> Menjadi Pemimpin yang efisien dalam operasional</li>
+          <li><i class="fas fa-users"></i> Membentuk komunitas developer muda Indonesia</li>
+          <li><i class="fas fa-graduation-cap"></i> Memiliki mimpi menyelesaikan S1 di bidang Finance</li>
+        </ul>
+        <a href="#" class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i> Kembali ke Profil</a>
+      </div>
+    </section>
+
+    <!-- SECTION: TEORI -->
+    <section id="teori">
+      <div class="section-header">
+        <i class="fas fa-fire"></i>
+        <h2>Teori</h2>
+      </div>
+      <div class="glass-card content-card">
+        <p>Saya percaya bahwa dunia terus bergerak pada siapa yang bekontribusi paling banyak.</p>
+        <ul class="highlight-list">
+          <li><i class="fas fa-dice"></i> Probabilistic thinking — hampir semua hal adalah peluang</li>
+          <li><i class="fas fa-code-branch"></i> First principle — memecah masalah hingga akar</li>
+          <li><i class="fas fa-seedling"></i> Compound effect — perubahan kecil = hasil besar</li>
+          <li><i class="fas fa-sitemap"></i> Sistem > Tujuan — fokus pada proses, bukan hasil instan</li>
+        </ul>
+        <a href="#" class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i> Kembali ke Profil</a>
+      </div>
+    </section>
+
+    <!-- SECTION: MENTALITAS -->
+    <section id="mentalitas">
+      <div class="section-header">
+        <i class="fas fa-arrow-trend-up"></i>
+        <h2>Mentalitas</h2>
+      </div>
+      <div class="glass-card content-card">
+        <p>Bagaimana saya merespon tantangan, kegagalan, dan kesuksesan. Mentalitas adalah fondasi dari semua pencapaian.</p>
+        <ul class="highlight-list">
+          <li><i class="fas fa-shield"></i> Antifragile — Tak ada kata kalah</li>
+          <li><i class="fas fa-clock"></i> Risk taker — Saya sangat berani mengambil peluang meskipun sangat beresiko</li>
+          <li><i class="fas fa-fire"></i> Growth mindset — kemampuan bisa dikembangkan selagi kita terus bertanya</li>
+          <li><i class="fas fa-heart"></i> Ownership — bertanggung jawab penuh atas hidup sendiri</li>
+        </ul>
+        <a href="#" class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i> Kembali ke Profil</a>
+      </div>
+    </section>
+
+    <!-- FOOTER (opsional) -->
+    <div style="text-align: center; padding: 20px; color: #1e293b;">
+      <p>— Setiap langkah adalah bagian dari proses —</p>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: KURSOR CAIR -->
+  <script>
+    (function() {
+      const glow = document.getElementById('cursorGlow');
+      if (!glow) return;
+
+      function updateGlow(e) {
+        const x = e.clientX;
+        const y = e.clientY;
+        glow.style.background = `radial-gradient(circle 500px at ${x}px ${y}px, rgba(255, 255, 255, 0.3), rgba(200, 200, 200, 0.1) 60%, transparent 80%)`;
+      }
+
+      let ticking = false;
+      window.addEventListener('mousemove', (e) => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            updateGlow(e);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+
+      window.addEventListener('mouseleave', () => {
+        glow.style.background = `radial-gradient(circle 500px at 50% 50%, rgba(255, 255, 255, 0.2), transparent 70%)`;
+      });
+
+      glow.style.background = `radial-gradient(circle 500px at 50% 50%, rgba(255, 255, 255, 0.2), transparent 70%)`;
+    })();
+  </script>
+</body>
+</html>
